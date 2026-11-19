@@ -19,12 +19,17 @@ const props = defineProps({
   }
 })
 
-const { data, pending, error, refresh } = await useFetch(props.infoUrl, {
+const { data, status, error, refresh } = await useFetch(props.infoUrl, {
   key: () => `photo-info-${props.infoUrl}`,
   // picsum.photos pozwala na CORS — pobieramy po stronie klienta, aby uniknąć
   // problemów z cache'owaniem SSR pomiędzy podstronami.
   server: false
 })
+
+// Przy server: false serwer renderuje stan 'idle' (bez pobierania), a nie
+// 'pending'. Traktujemy oba jako ładowanie, aby HTML z serwera zgadzał się
+// z pierwszym renderem w przeglądarce (brak błędu hydracji).
+const isLoading = computed(() => status.value === 'idle' || status.value === 'pending')
 
 // Proporcje zdjęcia wyrażone liczbowo (lekka informacja poglądowa).
 const aspectRatio = computed(() => {
@@ -44,7 +49,7 @@ const aspectRatio = computed(() => {
     </h2>
 
     <div
-      v-if="pending"
+      v-if="isLoading"
       class="flex items-center gap-3 text-gray-500"
       role="status"
       aria-live="polite"
