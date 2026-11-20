@@ -51,7 +51,24 @@ Plik statyczny: `/api/comments.json`
 
 Plik zawiera 11 komentarzy dla zdjęcia nr 1 oraz 3 komentarze dla zdjęcia nr 2.
 
+## Testy i sprawdzanie typów
 
+Testy jednostkowe i komponentowe są napisane w [Vitest](https://vitest.dev) z
+[`@nuxt/test-utils`](https://nuxt.com/docs/getting-started/testing) (środowisko `nuxt`, happy-dom).
+Znajdują się w katalogu `tests/` i odzwierciedlają strukturę `app/`.
+
+```bash
+pnpm test                                                      # uruchamia wszystkie testy (tests/**/*.test.ts)
+pnpm vitest                                                    # tryb watch — testy uruchamiają się ponownie po zmianach
+pnpm vitest run tests/app/components/CommentsSection.test.ts   # pojedynczy plik
+pnpm vitest run -t "pokazuje stan ładowania"                   # pojedynczy test po nazwie
+```
+
+Sprawdzanie typów (TypeScript + szablony Vue przez `vue-tsc`):
+
+```bash
+pnpm typecheck
+```
 
 ## Dokumentacja
 
